@@ -1,0 +1,51 @@
+name: Veracode Scan on Every Commit
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  veracode-sast-scan:
+    runs-on: ubuntu-latest
+    name: Veracode SAST Policy Scan
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Create Build Artifact
+        run: zip -r app.zip src package-lock.json
+
+      - name: Run Veracode Upload and Scan
+        uses: veraakarthikbharadwaj/uploadandscan-action@main
+        with:
+          vid: ${{ secrets.VERACODE_API_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY }}
+          appname: ${{ github.repository }}
+          filepath: app.zip
+          version: ${{ github.sha }}
+          createprofile: true
+          failbuild: false
+          scantimeout: 30
+          veracodeHost: ${{ secrets.VERACODE_HOST }}
+          debug: false
+
+      - name: Upload Scan Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: veracode-scan-results
+          path: |
+            policy_flaws.json
+            results_url.txt
