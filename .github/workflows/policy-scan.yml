@@ -40,8 +40,8 @@ jobs:
           failbuild: false
           gitRepositoryUrl: ${{ github.server_url }}/${{ github.repository }}
           deleteincompletescan: true
-          workflowApp: true
-          debug: false
+          workflowApp: false
+          debug: true
           veracodeHost: api-agora-stage-103.stage.veracode.io
 
       - name: Upload Scan Results
