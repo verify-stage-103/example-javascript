@@ -31,14 +31,18 @@ jobs:
         with:
           vid: ${{ secrets.VERACODE_API_ID }}
           vkey: ${{ secrets.VERACODE_API_KEY }}
-          appname: ${{ github.repository }}
-          filepath: app.zip
-          version: ${{ github.sha }}
+          appname: 'verify-stage-103/example-javascript'
           createprofile: true
-          failbuild: false
+          policy: 'Veracode Recommended Medium + SCA'
+          version: ${{ env.VERSION }}
+          filepath: ./app.zip
           scantimeout: 30
-          veracodeHost: api-agora-stage-103.stage.veracode.io
+          failbuild: false
+          gitRepositoryUrl: ${{ github.server_url }}/${{ github.repository }}
+          deleteincompletescan: true
+          workflowApp: true
           debug: false
+          veracodeHost: api-agora-stage-103.stage.veracode.io
 
       - name: Upload Scan Results
         if: always()
