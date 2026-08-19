@@ -37,7 +37,7 @@ jobs:
           createprofile: true
           failbuild: false
           scantimeout: 30
-          veracodeHost: api-agora-stage-107.stage.veracode.io
+          veracodeHost: api-agora-stage-103.stage.veracode.io
           debug: false
 
       - name: Upload Scan Results
