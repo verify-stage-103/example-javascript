@@ -34,7 +34,7 @@ jobs:
           appname: 'verify-stage-103/example-javascript'
           createprofile: true
           policy: 'Veracode Recommended Medium + SCA'
-          version: ${{ env.VERSION }}
+          version: ${{ github.sha }}
           filepath: ./app.zip
           scantimeout: 30
           failbuild: false
